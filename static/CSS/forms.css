@@ -1,0 +1,42 @@
+body{
+    background-color: #F5F5DC  !important;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: bisque;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px 5px black;
+}
+
+.danger {
+    color: red;
+    font-size: 15px;
+}
+
+        
+input, button {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+}
+
+.position-absolute{
+    width: 100%;
+}
+
+.btn-sm{
+    width: fit-content;
+    float: left;
+}
+
+#heading{
+    text-align: center;
+}
+
+
+        
