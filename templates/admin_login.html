@@ -1,0 +1,35 @@
+{% extends 'base_form.html' %}
+
+{% block title %}
+Admin Login
+{% endblock %}
+
+{% block header %}
+Admin Login
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label>{{ form.email.label }}</label>
+    {{ form.email() }}
+    {% if form.email.errors %}
+        <p class="danger">{{ form.email.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.password.label }}</label>
+    {{ form.password() }}
+    {% if form.password.errors %}
+        <p class="danger">{{ form.password.errors[0] }}</p>
+    {% endif %}
+    <br><br>
+    
+    {{ form.submit(class="btn btn-primary") }}
+
+    <br><br>
+</form>
+
+<p>Not a Admin? <a href="{{ url_for('auth.home') }}">Home Page</a></p>
+
+{% endblock %}

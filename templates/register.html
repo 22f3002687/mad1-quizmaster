@@ -1,0 +1,70 @@
+{% extends 'base_form.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block header %}
+Register
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <label>{{ form.username.label }}</label>
+    {{ form.username() }}
+    {% if form.username.errors %}
+        <p class="danger">{{ form.username.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.email.label }}</label>
+    {{ form.email() }}
+    {% if form.email.errors %}
+        <p class="danger">{{ form.email.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.password.label }}</label>
+    {{ form.password() }}
+    {% if form.password.errors %}
+        <p class="danger">{{ form.password.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.confirm_password.label }}</label>
+    {{ form.confirm_password() }}
+    {% if form.confirm_password.errors %}
+        <p class="danger">{{ form.confirm_password.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.full_name.label }}</label>
+    {{ form.full_name() }}
+    {% if form.full_name.errors %}
+        <p class="danger">{{ form.full_name.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.qualification.label }}</label>
+    {{ form.qualification() }}
+    {% if form.qualification.errors %}
+        <p class="danger">{{ form.qualification.errors[0] }}</p>
+    {% endif %}
+
+    <label>{{ form.dob.label }}</label>
+    <div style="width: fit-content; margin: 0;">
+        {{ form.dob(type="date") }}
+    </div>
+    
+    
+    {% if form.dob.errors %}
+        <p class="danger">{{ form.dob.errors[0] }}</p>
+    {% endif %}
+
+    <br>
+
+    {{ form.submit(class="btn btn-primary") }}
+
+    <br><br>
+</form>
+
+<p>Already have an account? <a href="{{ url_for('auth.user_login') }}">Login here</a></p>
+{% endblock %}
+
