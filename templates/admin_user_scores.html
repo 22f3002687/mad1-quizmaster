@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+    {{ user.username }}-Scores
+{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_user_scores.css') }}">
+{% endblock %}
+{% block content %}
+    <h2 class="name">{{ user.username }}'s Performance</h2>
+    <div class="score">
+        {% for score in scores %}
+            <div class="score-{{ score.id }}">
+                <p>
+                    Subject Name: {{ score.quiz.chapter.subject.name }}</br>
+                    Chapter Name: {{ score.quiz.chapter.name }}</br>
+                    Quiz Name: Quiz-{{ score.quiz.id }}</br>
+                    Attempt Time: {{ score.timestamp }}</br>
+                    Total Score: {{ score.total_scored }}
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

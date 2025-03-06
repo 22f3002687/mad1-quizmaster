@@ -1,0 +1,16 @@
+.user{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    padding: 10px;
+}
+
+.score,.delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewuser{
+    padding: 10px !important;
+    margin: 10px !important;
+}

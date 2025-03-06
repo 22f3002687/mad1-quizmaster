@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="../static/CSS/admin_dashboard.css"/>
+{% endblock %}>
+
+{% block content %}
+  <div class="grid-container">
+    <div class="user-container">
+        <h2>Total Users</h2>
+        <h3>{{ total_users }}</h3>
+    </div>
+    <div class="subject-container">
+        <h2>Total Subjects</h2>
+        <h3>{{ total_subjects }}</h3>
+        <a href="{{ url_for('admin.subjects') }}" class="btn btn-link">View Subjects</a>
+    </div>
+    <div class="score-container">
+        <h2>Recent Scores</h2>
+        <ul class="list-group list-group-flush">
+          {% for score in recent_scores %}
+          <li class="list-group-item">
+              {{ score.user.full_name }} scored {{ score.total_scored }}% in 
+              {{ score.quiz.chapter.name }} ({{ score.quiz.chapter.subject.name }})
+              <small class="text-muted d-block">{{ score.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+          </li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+{% endblock %}

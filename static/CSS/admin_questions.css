@@ -1,0 +1,20 @@
+#addQuestion{
+    margin: 10px !important;
+}
+
+.viewquestion{
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.question{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    padding: 10px;
+}
+
+.edit,.delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

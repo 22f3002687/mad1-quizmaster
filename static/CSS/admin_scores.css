@@ -1,0 +1,10 @@
+.score{
+    margin: 10px !important;
+    padding: 10px !important;
+}
+
+.quiz-details{
+    margin: 10px !important;
+    border: 2px solid #000;
+    padding: 10px;
+}

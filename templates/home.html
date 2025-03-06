@@ -18,6 +18,17 @@
                 <button type="button" class="btn btn-primary">Login</button>
             </a>
         </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
         <div class="heading">
             <h1><b>Welcome to QuizMaster - Test Your Knowledge & Skills!</b></h1>
         </div>

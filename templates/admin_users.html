@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}   
+Users
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_users.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="viewuser">
+        <h2>All Users</h2>
+        
+        {% for user in users %}
+            <div class="user">
+                <div class="list-group">
+                    <div class="d-flex w-100">
+                        <h2 style="flex: 1;">UserName: {{ user.username }}</h2>
+                        <p style="flex: 1;">
+                            Full Name: {{ user.full_name }}</br>
+                            Qualification: {{ user.qualification }}</br>
+                            Date Of Birth: {{ user.dob }}</br>
+                            Email: {{ user.email }} 
+                        </p>
+
+                    </div>
+                </div>
+                <div class="score">
+                    <a href="{{ url_for('admin.user_scores', user_id=user.id) }}" class="btn btn-warning">View Scores</a>
+                </div>
+                <div class="delete">
+                    <button type="button" class="btn btn-danger" 
+            data-bs-toggle="modal" 
+            data-bs-target="#deleteuser-{{ user.id }}">
+                    Remove User
+                </button>   
+                <!-- Modal -->
+                <div class="modal fade" id="deleteuser-{{ user.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete User</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>  
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <span id="deleteSubjectName"></span>?</p>
+                                <p class="text-danger">This action cannot be undone and will delete all associated chapters and quizzes.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form method="POST" action="{{ url_for('admin.delete_user', user_id=user.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

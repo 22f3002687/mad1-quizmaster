@@ -1,0 +1,21 @@
+#addQuiz{
+    margin: 10px !important;
+}
+
+
+.viewquiz{
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.quiz{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr 1fr;
+    padding: 10px;
+}
+
+.edit,.delete,.score{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

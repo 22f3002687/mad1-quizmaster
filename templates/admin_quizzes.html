@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Chapters
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_quizzes.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Button to open modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#quizModal" id="addQuiz">
+    Create New Quiz
+</button>
+
+<!-- Quiz Modal -->
+<div class="modal fade" id="quizModal" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="quizModalLabel">Create New Quiz</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ url_for('admin.quizzes', chapter_id=chapter.id) }}" id="quiz-form">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label for="date_of_quiz" class="form-label">{{ form.date_of_quiz.label }}</label>
+                        {{ form.date_of_quiz(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="time_duration" class="form-label">{{ form.time_duration.label }}</label>
+                        {{ form.time_duration(class="form-control") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="remarks" class="form-label">{{ form.remarks.label }}</label>
+                        {{ form.remarks(class="form-control") }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {{ form.submit(class="btn btn-primary") }}  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="viewquiz">
+    <h2>All Quizzes</h2>
+    
+    {% for quiz in quizzes %}
+        <div class="quiz">
+            <div class="list-group">
+
+                <a href="{{ url_for('admin.questions', quiz_id=quiz.id) }}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">Quiz-{{ quiz.id }}</h1>
+                    </div>
+                        <p>Date of Quiz: {{ quiz.date_of_quiz }}</br>
+                            Time Duration: {{ quiz.time_duration }}</br>
+                            Remarks: {{ quiz.remarks }}
+                        </p>
+                </a>          
+            </div>       
+            <div class="score">
+                <a href="{{ url_for('admin.scores', quiz_id=quiz.id) }}" class="btn btn-primary">Scores</a>
+            </div>
+            <div class="edit">
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editquiz-{{ quiz.id }}">
+                    Edit Quiz
+                </button>
+                <div class="modal fade" id="editquiz-{{ quiz.id }}" tabindex="-1" aria-labelledby="editQuizModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Quiz</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Edit Quiz Form -->
+                                <form method="POST" action="{{ url_for('admin.edit_quiz', quiz_id=quiz.id) }}" id="editquiz-form-{{ quiz.id }}">
+                                    {{ form.hidden_tag() }}
+                
+                                    <div class="mb-3">
+                                        <label for="date_of_quiz" class="form-label">{{ form.date_of_quiz.label }}</label>
+                                        {{ form.date_of_quiz(class="form-control", value=quiz.date_of_quiz.strftime('%Y-%m-%dT%H:%M') if quiz.date_of_quiz else '') }}
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="time_duration" class="form-label">{{ form.time_duration.label }}</label>
+                                        {{ form.time_duration(class="form-control", value=quiz.time_duration.strftime('%H:%M') if quiz.time_duration else '') }}
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="remarks" class="form-label">{{ form.remarks.label }}</label>
+                                        {{ form.remarks(class="form-control", value=quiz.remarks) }}
+                                    </div>
+                
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>           
+            <div class="delete">
+                <button type="button" class="btn btn-danger" 
+            data-bs-toggle="modal" 
+            data-bs-target="#deletequiz-{{ quiz.id }}">
+                    Delete
+                </button>   
+                <!-- Modal -->
+                <div class="modal fade" id="deletequiz-{{ quiz.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Quiz</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>  
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <span id="deleteSubjectName"></span>?</p>
+                                <p class="text-danger">This action cannot be undone and will delete all associated chapters and quizzes.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form method="POST" action="{{ url_for('admin.delete_quiz', quiz_id=quiz.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+        
+
+
+
+
+{% endblock %}

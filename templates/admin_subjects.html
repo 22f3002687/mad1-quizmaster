@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Subjects
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_subjects.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Button to trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" id="addSubject">
+    Create new subject
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Subject</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Ensure form has method POST and action -->
+                <form method="POST" action="{{ url_for('admin.subjects') }}">
+                    {{ form.hidden_tag() }}  <!-- CSRF Token -->
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">{{ form.name.label }}</label>
+                        {{ form.name(class="form-control", id="name") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">{{ form.description.label }}</label>
+                        {{ form.description(class="form-control", id="description") }}
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        {{ form.submit(class="btn btn-primary") }}  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="viewsubject">
+    <h2>All Subjects</h2>
+    
+        {% for subject in subjects %}
+        <div class="subject">
+            <div class="list-group">
+                    <a href="{{ url_for('admin.chapters', subject_id=subject.id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">{{ subject.name }}</h1>
+                    </div>
+                    <p class="mb-1">Description: {{ subject.description }}</p>
+                    </a>
+            </div>
+            <div class="edit">
+                <button type="button" class="btn btn-warning" 
+            data-bs-toggle="modal" 
+            data-bs-target="#editsubject-{{ subject.id }}">
+                    Edit
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="editsubject-{{ subject.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Edit Subject</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Ensure form has method POST and action -->
+                                <form method="POST" action="{{ url_for('admin.edit_subject', subject_id=subject.id) }}">
+                                    {{ form.hidden_tag() }}  <!-- CSRF Token -->
+
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">{{ form.name.label }}</label>
+                                        {{ form.name(class="form-control", id="name", value=subject.name) }}
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">{{ form.description.label }}</label>
+                                        {{ form.description(class="form-control", id="description", value=subject.description) }}
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        {{ form.submit(class="btn btn-primary") }}  
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="delete">
+                <button type="button" class="btn btn-danger" 
+            data-bs-toggle="modal" 
+            data-bs-target="#deletesubject-{{ subject.id }}">
+                    Delete
+                </button>   
+                <!-- Modal -->
+                <div class="modal fade" id="deletesubject-{{ subject.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Delete Subject</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>  
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete <span id="deleteSubjectName"></span>?</p>
+                                <p class="text-danger">This action cannot be undone and will delete all associated chapters and quizzes.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <form method="POST" action="{{ url_for('admin.delete_subject', subject_id=subject.id) }}" class="d-inline">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+</div>
+
+{% endblock %}

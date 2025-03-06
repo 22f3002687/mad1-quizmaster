@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}   
+Scores
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_scores.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="viewquiz">
+    <div class="quiz-details">
+        <h2>Quiz no. {{ quiz.id }}</h2>
+        <p>Chapter: {{ quiz.chapter.name }}</p>
+        <p>Subject: {{ quiz.chapter.subject.name }}</p>
+        <p>Date: {{ quiz.date_of_quiz }}</p>
+    </div>
+    <div class="score">
+        <h2>All Scores</h2>
+        {% for score in scores %}
+            <div class="list-group">
+                <div class="d-flex w-100 justify-content-between">
+                    <h2>User: {{ score.user.username }}</h2>
+                    <p>Score: {{ score.total_scored }}</p>
+                    <p>Attempt Time: {{ score.timestamp }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

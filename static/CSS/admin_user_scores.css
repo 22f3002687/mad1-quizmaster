@@ -1,0 +1,9 @@
+.score{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+.name{
+    margin: 10px !important;
+}

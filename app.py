@@ -2,7 +2,7 @@ from flask import Flask
 from models import *
 from dotenv import load_dotenv
 import os
-from controllers import auth_bp, login_manager
+from controllers import auth_bp, login_manager, admin_bp
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +23,7 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     login_manager.init_app(app)
+    app.register_blueprint(admin_bp)
 
     
     

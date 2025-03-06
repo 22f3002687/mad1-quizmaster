@@ -1,0 +1,21 @@
+#addSubject{
+    margin: 10px !important;
+}
+
+
+.viewsubject{
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.subject{
+    display: grid;
+    grid-template-columns: 8fr 1fr 1fr;
+    padding: 10px;
+}
+
+.edit,.delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
