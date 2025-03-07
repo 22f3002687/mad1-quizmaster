@@ -65,6 +65,10 @@ Questions
 
     <div class="viewquestion">
         <h2>All Questions</h2>
+        <p>
+            Chapter: {{ quiz.chapter.name }}</br>
+            Subject: {{ quiz.chapter.subject.name }}
+        </p>
         {% for question in questions %}
             <div class="question">
                 <div class="list-group">
