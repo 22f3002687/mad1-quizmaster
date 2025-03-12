@@ -2,8 +2,15 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 10px;
+    gap: 10px;
 }
 
 .name{
     margin: 10px !important;
+}
+
+.score-card{
+    border: 1px solid black;
+    padding: 10px;
+    background-color: white;
 }

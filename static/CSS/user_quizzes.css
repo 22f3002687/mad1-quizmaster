@@ -1,0 +1,20 @@
+.viewquiz{
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+    padding: 2px !important;
+    margin: 10px !important;
+    background-color: black;
+    gap: 2px;
+}
+
+.attempt{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #F5F5DC  !important;
+}
+
+.quiz{
+    background-color: #F5F5DC  !important;
+    padding: 10px; 
+}

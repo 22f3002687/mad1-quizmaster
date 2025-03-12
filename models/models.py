@@ -23,6 +23,9 @@ class Admin(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+    
+    def get_id(self):
+        return f"admin-{self.id}"
 
 class User(UserMixin, db.Model):
     __tablename__ = 'user'
@@ -33,7 +36,7 @@ class User(UserMixin, db.Model):
     full_name = db.Column(db.String(100), nullable=False)
     qualification = db.Column(db.String(100), nullable=False)
     dob = db.Column(db.Date, nullable=False)
-    scores = db.relationship('Score', backref='user', lazy=True)
+    scores = db.relationship('Score', backref='user',cascade="all, delete", lazy=True)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -41,12 +44,15 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    def get_id(self):
+        return f"user-{self.id}"
+    
 class Subject(db.Model):
     __tablename__ = 'subject'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    chapters = db.relationship('Chapter', backref='subject', lazy=True)
+    chapters = db.relationship('Chapter', backref='subject', cascade="all, delete", lazy=True)
 
 class Chapter(db.Model):
     __tablename__ = 'chapter'
@@ -54,7 +60,7 @@ class Chapter(db.Model):
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text)
-    quizzes = db.relationship('Quiz', backref='chapter', lazy=True)
+    quizzes = db.relationship('Quiz', backref='chapter',cascade="all, delete", lazy=True)
 
 class Quiz(db.Model):
     __tablename__ = 'quiz'
@@ -63,8 +69,8 @@ class Quiz(db.Model):
     date_of_quiz = db.Column(db.DateTime, nullable=False)
     time_duration = db.Column(db.Time, nullable=False)  
     remarks = db.Column(db.Text)
-    questions = db.relationship('Question', backref='quiz', lazy=True)
-    scores = db.relationship('Score', backref='quiz', lazy=True)
+    questions = db.relationship('Question', backref='quiz', cascade="all, delete", lazy=True)
+    scores = db.relationship('Score', backref='quiz', cascade="all, delete", lazy=True)
 
 class Question(db.Model):
     __tablename__ = 'question'

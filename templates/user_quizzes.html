@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Quizzes
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_quizzes.css') }}"/>
+{% endblock %}
+
+{% block content %}
+    <h2 style="margin: 10px;">All Quizzes</h2>
+    <div class="viewquiz">
+        
+        {% for quiz in quizzes %}
+            <div class="quiz">
+                <h3>Quiz-{{ quiz.id }}</h3>
+                <p>Chapter: {{ quiz.chapter.name }}</p>
+                <p>Subject: {{ quiz.chapter.subject.name }}</p>
+                <p>Due Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</p>
+                <p>Time Duration: {{ quiz.time_duration }} minutes</p>
+                <p>Remarks: {{ quiz.remarks }}</p>
+            </div>
+            <div class="attempt">
+                <a href="{{ url_for('user.attempt_quiz', chapter_id=chapter_id, quiz_id=quiz.id) }}" class="btn btn-primary">Attempt Quiz</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

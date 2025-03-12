@@ -55,3 +55,5 @@ class QuestionForm(FlaskForm):
     
     submit = SubmitField('Save Question')
 
+class AttemptQuizForm(FlaskForm):
+    submit = SubmitField("Submit Quiz")

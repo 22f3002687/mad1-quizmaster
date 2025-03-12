@@ -6,3 +6,4 @@ flask-wtf
 werkzeug
 python-dotenv
 email-validator
+pytz

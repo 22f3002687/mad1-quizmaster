@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quiz Results
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/quiz_results.css') }}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="mb-4">Quiz Results</h2>
+        
+        {% if latest_attempt %}
+        <div class="card mb-4">
+            <div class="card-header">
+            Latest Attempt
+            </div>
+            <div class="card-body">
+            <p><strong>Score:</strong> {{ latest_attempt.total_scored }}</p>
+            <p><strong>Date:</strong> {{ latest_attempt.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+            </div>
+        </div>
+        
+        {% if feedback %}
+        <h4>Detailed Feedback</h4>
+        {% for item in feedback %}
+            <div class="card mb-3">
+            <div class="card-header">
+                Question {{ loop.index }}
+            </div>
+            <div class="card-body">
+                <p><strong>Question:</strong> {{ item.question_text }}</p>
+                <p>
+                <strong>Your Answer:</strong> {{ item.user_answer_text }}
+                {% if item.is_correct %}
+                    <span class="badge bg-success">Correct</span>
+                {% else %}
+                    <span class="badge bg-danger">Incorrect</span>
+                {% endif %}
+                </p>
+                <p><strong>Correct Answer:</strong> {{ item.correct_answer_text }}</p>
+            </div>
+            </div>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-warning">
+            No detailed feedback available.
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="alert alert-warning">
+            No attempts found.
+        </div>
+        {% endif %}
+        
+        {% if previous_attempts %}
+        <h4 class="mt-5">Previous Attempts</h4>
+        <ul class="list-group">
+            {% for attempt in previous_attempts %}
+            <li class="list-group-item">
+            Score: {{ attempt.total_scored }} | Date: {{ attempt.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        <a href="{{ url_for('user.quizzes', chapter_id=0) }}" class="btn btn-primary mt-4">Back to Quiz List</a>
+    </div>
+
+
+{% endblock %}

@@ -8,11 +8,15 @@ from flask import Blueprint, render_template, redirect, url_for, flash, request
 login_manager = LoginManager()
 
 @login_manager.user_loader
-def load_user(user_id):
-    user = User.query.get(int(user_id))
-    if user:
-        return user
-    return Admin.query.get(int(user_id))
+def load_user(user_identifier):
+    if user_identifier.startswith("admin-"):
+        admin_id = int(user_identifier.split("-")[1])
+        return Admin.query.get(admin_id)
+    elif user_identifier.startswith("user-"):
+        user_id = int(user_identifier.split("-")[1])
+        return User.query.get(user_id)
+    return None
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -20,23 +24,19 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/home', methods=['GET'])
 def home():
     if current_user.is_authenticated:
-
-        admin = Admin.query.get(current_user.id)
-
-        if admin:
+        user_identifier = current_user.get_id()  
+        if user_identifier.startswith("admin-"):
             return redirect(url_for('admin.dashboard'))
         else:
             return redirect(url_for('user.dashboard'))
-
     return render_template('home.html')
+
 
 @auth_bp.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if current_user.is_authenticated:
-
-        admin = Admin.query.get(current_user.id)
-
-        if admin:
+        user_identifier = current_user.get_id()  
+        if user_identifier.startswith("admin-"):
             return redirect(url_for('admin.dashboard'))
         else:
             return redirect(url_for('user.dashboard'))
@@ -61,14 +61,12 @@ def admin_login():
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def user_login():
     if current_user.is_authenticated:
-
-        admin = Admin.query.get(current_user.id)
-
-        if admin:
+        user_identifier = current_user.get_id()  
+        if user_identifier.startswith("admin-"):
             return redirect(url_for('admin.dashboard'))
         else:
             return redirect(url_for('user.dashboard'))
-
+    
     form = UserLoginForm()
 
     if form.validate_on_submit():
@@ -89,10 +87,8 @@ def user_login():
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-
-        admin = Admin.query.get(current_user.id)
-
-        if admin:
+        user_identifier = current_user.get_id()  
+        if user_identifier.startswith("admin-"):
             return redirect(url_for('admin.dashboard'))
         else:
             return redirect(url_for('user.dashboard'))
@@ -110,6 +106,10 @@ def register():
         if User.query.filter_by(email=email).first():
             flash('Email already registered', 'danger')
             return redirect(url_for('auth.user_login'))
+        
+        if User.query.filter_by(username=username).first():
+            flash('Username already taken', 'danger')
+            return redirect(url_for('auth.register'))
 
         user = User(
             username=username,

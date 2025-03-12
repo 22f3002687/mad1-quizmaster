@@ -1,0 +1,10 @@
+.viewchapter{
+    padding: 10px !important;
+    margin: 10px !important;
+}
+
+.chapter{
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 10px;
+}

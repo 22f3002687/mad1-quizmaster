@@ -10,13 +10,12 @@ def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if current_user.is_authenticated:
-            admin = Admin.query.get(current_user.id)
-
-            if not admin:
+            user_identifier = current_user.get_id()  
+            if user_identifier.startswith("admin-"):
+                return f(*args, **kwargs)
+            else:
                 flash('Access denied', 'danger')
                 return redirect(url_for('auth.home'))
-            else:
-                return f(*args, **kwargs)
         else:
             flash('Access denied', 'danger')
             return redirect(url_for('auth.home'))
@@ -51,7 +50,7 @@ def subjects():
 @admin_required
 def edit_subject(subject_id):
     subject = Subject.query.get_or_404(subject_id)
-    form = SubjectForm(request.form)  # Use SubjectForm for both Create & Edit
+    form = SubjectForm(request.form)  
 
     if form.validate_on_submit():
         subject.name = form.name.data
@@ -59,7 +58,7 @@ def edit_subject(subject_id):
         db.session.commit()
         flash("Subject updated successfully", "success")
 
-    return redirect(url_for("admin.subjects"))  # Redirect back to subjects list
+    return redirect(url_for("admin.subjects"))  
 
 @admin_bp.route('/delete_subject/<int:subject_id>', methods=['POST'])
 @admin_required
@@ -91,7 +90,7 @@ def chapters(subject_id):
 def edit_chapter(chapter_id):
     chapter = Chapter.query.get_or_404(chapter_id)
     subject_id = chapter.subject_id
-    form = ChapterForm(request.form)  # Use SubjectForm for both Create & Edit
+    form = ChapterForm(request.form)  
 
     if form.validate_on_submit():
         chapter.name = form.name.data
@@ -99,7 +98,7 @@ def edit_chapter(chapter_id):
         db.session.commit()
         flash("Chapter updated successfully", "success")
 
-    return redirect(url_for("admin.chapters", subject_id=subject_id))  # Redirect back to subjects list
+    return redirect(url_for("admin.chapters", subject_id=subject_id)) 
 
 @admin_bp.route('/delete_chapter/<int:chapter_id>', methods=['POST'])
 @admin_required
@@ -138,7 +137,7 @@ def edit_quiz(quiz_id):
     print("edit quiz")
     quiz = Quiz.query.get_or_404(quiz_id)
     chapter_id = quiz.chapter_id
-    form = QuizForm(request.form)  # Use SubjectForm for both Create & Edit
+    form = QuizForm(request.form)  
 
     if form.validate_on_submit():
         print("form validate succesfully")

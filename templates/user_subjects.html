@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Subjects
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_subjects.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="viewsubject">
+        <h2>All Subjects</h2>
+        
+            {% for subject in subjects %}
+            <div class="subject">
+                <div class="list-group">
+                        <a href="{{ url_for('user.chapters', subject_id=subject.id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">{{ subject.name }}</h1>
+                        </div>
+                        <p class="mb-1">Description: {{ subject.description }}</p>
+                        </a>
+                </div>
+            </div>
+            {% endfor %}
+    </div>
+
+{% endblock %}

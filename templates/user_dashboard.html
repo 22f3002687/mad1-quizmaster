@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Dashboard
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_dashboard.css') }}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="grid-container">
+        <div class="subject-container">
+            <h2>Total Available Subjects</h2>
+            <h3>{{ total_subjects }}</h3>
+            <a href="{{ url_for('user.subjects') }}" class="btn btn-link">View Subjects</a>
+        </div>
+        <div class="quiz-container">
+            <h2>Total Available Quizzes</h2>
+            <h3>{{ total_quizzes }}</h3>
+            <a href="{{ url_for('user.quizzes', chapter_id = 0) }}" class="btn btn-link">View Quizzes</a>
+        </div>
+        <div class="score-container">
+            <h2>Recent Scores</h2>
+            <ul class="list-group list-group-flush">
+            {% for score in recent_scores %}
+            <li class="list-group-item">
+                Quiz-{{ score.quiz.id }}
+                Chapter Name : {{ score.quiz.chapter.name }}
+                Subject Name : {{ score.quiz.chapter.subject.name }}
+                Score : {{ score.total_scored }}%
+                <small class="text-muted d-block">{{ score.timestamp.strftime('%Y-%m-%d %H:%M') }}</small>
+            </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+{% endblock %}

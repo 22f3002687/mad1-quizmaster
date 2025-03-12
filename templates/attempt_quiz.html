@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Attempt Quiz
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/attempt_quiz.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>{{ quiz.title }}</h2>
+        <p><strong>Due Date:</strong> {{ quiz.date_of_quiz.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        <p><strong>Time Allowed:</strong> {{ quiz.time_duration.strftime('%H:%M:%S') }}</p>
+        
+    
+        <div id="timer" class="alert alert-info">
+        Time Remaining: <span id="time_remaining"></span>
+        </div>
+        
+    
+        <form method="POST" action="{{ url_for('user.attempt_quiz', quiz_id=quiz.id, chapter_id=quiz.chapter.id) }}" id="attemptQuizForm">
+        {{ form.hidden_tag() }}
+        
+        {% for question in questions %}
+            {% set field_name = "question_" ~ question.id %}
+            <div class="mb-3">
+            <p><strong>{{ loop.index }}. {{ question.question_statement }}</strong></p>
+            {% for subfield in form[field_name] %}
+                <div class="form-check">
+                {{ subfield(class="form-check-input") }}
+                <label class="form-check-label">{{ subfield.label.text }}</label>
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+        
+        {{ form.submit(class="btn btn-primary") }}
+        <!--<button type="submit" class="btn btn-primary">Submit Quiz</button>-->
+        </form>
+    </div>
+  
+  
+  <script>
+    function startTimer(duration, display) {
+      var timer = duration;
+      var interval = setInterval(function () {
+        var hours = Math.floor(timer / 3600);
+        var minutes = Math.floor((timer % 3600) / 60);
+        var seconds = timer % 60;
+
+
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = hours + ":" + minutes + ":" + seconds;
+
+        if (--timer < 0) {
+          clearInterval(interval);
+          alert("Time is up! The quiz will be submitted automatically.");
+          console.log("Submitting quiz form...");
+          document.getElementById("attemptQuizForm").requestSubmit();
+        }
+      }, 1000);
+    }
+
+    window.onload = function () {
+      var duration = {{ duration_seconds }}; 
+      var display = document.getElementById('time_remaining');
+      startTimer(duration, display);
+    };
+  </script>
+  
+
+  
+
+{% endblock %}
