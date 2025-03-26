@@ -18,13 +18,7 @@ Attempt Quiz
         <div id="timer" class="alert alert-info">
         Time Remaining: <span id="time_remaining"></span>
         </div>
-        
-        <p><strong>DEBUG: Form Fields:</strong></p>
-        <ul>
-            {% for field in form %}
-                <li>{{ field.name }} ({{ field.data }})</li>
-            {% endfor %}
-        </ul>
+
 
     
         <form method="POST" action="{{ url_for('user.attempt_quiz', quiz_id=quiz.id, chapter_id=quiz.chapter.id) }}" id="attemptQuizForm">
