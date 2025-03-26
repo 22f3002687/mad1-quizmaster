@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block title %}
-User Quizzes
+Quiz Search Results
 {% endblock %}
 
 {% block styles %}
@@ -16,25 +16,29 @@ User Quizzes
 {% endblock %}
 
 {% block content %}
-    {% if quizzes|length == 0 %}
-        <h2 style="margin: 10px;">No Quizzes Found</h2>
-    {% else %}
-        <h2 style="margin: 10px;">All Quizzes</h2>
-        <div class="viewquiz">
-            
-            {% for quiz in quizzes %}
+    <h2 style="margin: 10px;">Search Results for Quizzes: "{{ query }}"</h2>
+    <div class="viewquiz">
+        
+
+        {% if quiz_results %}
+            {% for quiz in quiz_results %}
                 <div class="quiz">
                     <h3>Quiz-{{ quiz.id }}</h3>
-                    <p>Chapter: {{ quiz.chapter.name }}</p>
-                    <p>Subject: {{ quiz.chapter.subject.name }}</p>
-                    <p>Due Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</p>
-                    <p>Time Duration: {{ quiz.time_duration }} minutes</p>
-                    <p>Remarks: {{ quiz.remarks }}</p>
+                    <p>
+                        Subject: {{ quiz.subject_name }}</br>
+                        Chapter: {{ quiz.chapter_name }}</br>
+                        Due Date: {{ quiz.date_of_quiz }}</br>
+                        Time Duration: {{ quiz.time_duration }} minutes</br>
+                        Remarks: {{ quiz.remarks }}
+                    </p>
                 </div>
                 <div class="attempt">
                     <a href="{{ url_for('user.attempt_quiz', chapter_id=chapter_id, quiz_id=quiz.id) }}" class="btn btn-primary">Attempt Quiz</a>
                 </div>
             {% endfor %}
-        </div>
-    {% endif %}
+        {% else %}
+            <p class="alert alert-warning">No quizzes found.</p>
+        {% endif %}
+                
+    </div>
 {% endblock %}

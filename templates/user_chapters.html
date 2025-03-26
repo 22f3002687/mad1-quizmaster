@@ -9,20 +9,25 @@ Chapters
 {% endblock %}
 
 {% block content %}
-    <div class="viewchapter">
-        <h2>All Chapters Of {{ chapters[0].subject.name }}</h2>
-        
-            {% for chapter in chapters %}
-            <div class="chapter">
-                <div class="list-group">
-                        <a href="{{ url_for('user.quizzes', chapter_id = chapter.id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">{{ chapter.name }}</h1>
-                        </div>
-                        <p class="mb-1">Description: {{ chapter.description }}</p>
-                        </a>
+    {% if chapters|length == 0 %}
+        <h1>No Chapters Found</h1>
+    {% else %}
+
+        <div class="viewchapter">
+            <h2>All Chapters Of {{ chapters[0].subject.name }}</h2>
+            
+                {% for chapter in chapters %}
+                <div class="chapter">
+                    <div class="list-group">
+                            <a href="{{ url_for('user.quizzes', chapter_id = chapter.id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">{{ chapter.name }}</h1>
+                            </div>
+                            <p class="mb-1">Description: {{ chapter.description }}</p>
+                            </a>
+                    </div>
                 </div>
-            </div>
-            {% endfor %}
-    </div>
+                {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

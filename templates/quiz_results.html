@@ -33,13 +33,19 @@ Quiz Results
             <div class="card-body">
                 <p><strong>Question:</strong> {{ item.question_text }}</p>
                 <p>
-                <strong>Your Answer:</strong> {{ item.user_answer_text }}
-                {% if item.is_correct %}
-                    <span class="badge bg-success">Correct</span>
-                {% else %}
-                    <span class="badge bg-danger">Incorrect</span>
-                {% endif %}
+                    <strong>Your Answer:</strong> 
+                    {% if item.user_answer_text == "Skipped" %}
+                        <span class="text-warning">Skipped</span>
+                    {% else %}
+                        {{ item.user_answer_text }}
+                        {% if item.is_correct %}
+                            <span class="badge bg-success">Correct</span>
+                        {% else %}
+                            <span class="badge bg-danger">Incorrect</span>
+                        {% endif %}
+                    {% endif %}
                 </p>
+                
                 <p><strong>Correct Answer:</strong> {{ item.correct_answer_text }}</p>
             </div>
             </div>

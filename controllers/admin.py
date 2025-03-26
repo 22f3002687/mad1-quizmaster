@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from models import *
 from functools import wraps
 from .forms import SubjectForm, ChapterForm, QuizForm, QuestionForm
+from sqlalchemy import text
+import re
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -116,7 +118,6 @@ def quizzes(chapter_id):
     chapter = Chapter.query.get_or_404(chapter_id)
     form = QuizForm()
     if form.validate_on_submit():
-        print("form validate succesfully")
         quiz = Quiz(
             chapter_id=chapter_id,
             date_of_quiz=form.date_of_quiz.data,
@@ -240,3 +241,113 @@ def delete_user(user_id):
 
     flash('User deleted successfully', 'success')
     return redirect(url_for('admin.users'))
+
+def escape_fts_query(query):
+    """Escape special characters for FTS5 search"""
+    return re.sub(r'[\W]+', ' ', query) 
+
+
+@admin_bp.route('/search_users', methods=['GET'])
+@admin_required
+def search_users():
+    query = request.args.get('q', '').strip()
+    if not query:
+        return redirect(url_for('admin.users'))  
+
+    query = escape_fts_query(query)  
+
+    connection = db.engine.connect()
+    user_query = text("""
+        SELECT id, username, email, full_name, qualification
+        FROM user_fts 
+        WHERE username MATCH :query 
+        OR email MATCH :query 
+        OR full_name MATCH :query 
+        OR qualification MATCH :query 
+        LIMIT 10;
+    """)
+    user_results = connection.execute(user_query, {'query': f'"{query}"*'}).fetchall()
+    connection.close()
+
+    return render_template("admin_search_users.html", query=query, user_results=user_results, is_admin=True)
+
+
+@admin_bp.route('/search_subjects', methods=['GET'])
+@admin_required
+def search_subjects():
+    query = request.args.get('q', '').strip()
+    if not query:
+        return redirect(url_for('admin.subjects'))
+    
+    query = escape_fts_query(query)
+
+    connection = db.engine.connect()
+    subject_query = text("""
+    SELECT id, name, description
+    FROM subject_fts 
+    WHERE name MATCH :query 
+    OR description MATCH :query
+    LIMIT 10;
+    """)
+
+    subject_results = connection.execute(subject_query, {'query': f'"{query}"*'}).fetchall()
+    connection.close()
+    
+    form = SubjectForm(request.form) 
+    return render_template("admin_search_subjects.html", query=query, subject_results=subject_results, form=form, is_admin=True)
+
+
+@admin_bp.route('/search_quizzes/<int:chapter_id>', methods=['GET'])
+@admin_required
+def search_quizzes(chapter_id):
+    query = request.args.get('q', '').strip()
+    if not query:
+        return redirect(url_for('admin.quizzes', chapter_id=chapter_id))
+    
+    query = escape_fts_query(query)
+
+    connection = db.engine.connect()
+    quiz_query = text("""
+    SELECT id, remarks, date_of_quiz, time_duration
+    FROM quiz_fts 
+    WHERE remarks MATCH :query
+    OR date_of_quiz MATCH :query
+    OR time_duration MATCH :query
+    AND chapter_id = :chapter_id
+    LIMIT 10;
+    """)
+
+    quiz_results = connection.execute(quiz_query, {'query': f'"{query}"*', 'chapter_id': chapter_id }).fetchall()
+    connection.close()
+
+    form = QuizForm(request.form)
+    return render_template("admin_search_quizzes.html", query=query, quiz_results=quiz_results, chapter_id=chapter_id, form=form, is_admin=True)
+
+
+@admin_bp.route('/search_questions/<int:quiz_id>', methods=['GET'])
+@admin_required
+def search_questions(quiz_id):
+    query = request.args.get('q', '').strip()
+    if not query:
+        return redirect(url_for('admin.questions', quiz_id=quiz_id))
+    
+    query = escape_fts_query(query)
+
+    connection = db.engine.connect()
+    question_query = text("""
+    SELECT id, question_statement, option1, option2, option3, option4, correct_option
+    FROM question_fts 
+    WHERE question_statement MATCH :query
+    OR option1 MATCH :query
+    OR option2 MATCH :query
+    OR option3 MATCH :query
+    OR option4 MATCH :query
+    AND quiz_id = :quiz_id
+    LIMIT 10;
+    """)
+
+    question_results = connection.execute(question_query, {'query': f'"{query}"*', 'quiz_id': quiz_id}).fetchall()
+    connection.close()
+
+    form = QuestionForm(request.form)
+    return render_template("admin_search_questions.html", query=query, question_results=question_results, quiz_id=quiz_id, form=form, is_admin=True)

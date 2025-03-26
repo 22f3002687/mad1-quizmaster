@@ -34,6 +34,7 @@
                                 <a class="nav-link" href="{{ url_for('auth.logout')}}">Logout</a>
                             </li>
                         </ul>
+                        
                     {% else %}
                         <ul class="navbar-nav">
                             <li class="nav-item">
@@ -53,6 +54,8 @@
                             </li>
                         </ul>
                     {% endif %}
+                    {% block search %}
+                    {% endblock %}
                 {% endif %}
             </div>
             </div>

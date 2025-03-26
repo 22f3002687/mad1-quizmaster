@@ -8,6 +8,13 @@ Subjects
 <link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_subjects.css') }}">
 {% endblock %}
 
+{% block search %}
+    <form class="d-flex" action="{{ url_for('user.search_subjects') }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Subjects">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
+
 {% block content %}
     <div class="viewsubject">
         <h2>All Subjects</h2>

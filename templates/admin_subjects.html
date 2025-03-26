@@ -8,6 +8,13 @@ Subjects
 <link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_subjects.css') }}">
 {% endblock %}
 
+{% block search %}
+    <form class="d-flex" action="{{ url_for('admin.search_subjects') }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Subjects">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
+
 {% block content %}
 <!-- Button to trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" id="addSubject">

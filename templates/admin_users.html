@@ -8,6 +8,13 @@ Users
 <link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_users.css') }}">
 {% endblock %}
 
+{% block search %}
+    <form class="d-flex" action="{{ url_for('admin.search_users') }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Users">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
+
 {% block content %}
     <div class="viewuser">
         <h2>All Users</h2>

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}
+Subject Search Results
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_subjects.css') }}">
+{% endblock %}
+
+{% block search%}
+    <form class="d-flex" action="{{ url_for('user.search_subjects') }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Subjects">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="viewsubject">
+        <h2>Search Results for Subjects: "{{ query }}"</h2>
+
+        {% if subject_results %}
+            {% for subject in subject_results %}
+                <div class="subject">
+                    <div class="list-group">
+                            <a href="{{ url_for('user.chapters', subject_id=subject.id)}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h1 class="mb-1 btn btn-link" style="padding: 0px !important;">{{ subject.name }}</h1>
+                            </div>
+                            <p class="mb-1">Description: {{ subject.description }}</p>
+                            </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="alert alert-warning">No subjects found.</p>
+        {% endif %}
+    </div>
+{% endblock %}

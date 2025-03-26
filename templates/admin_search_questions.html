@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}
+Question Search Results
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='CSS/admin_questions.css') }}">
+{% endblock %}
+
+{% block search %}
+    <form class="d-flex" action="{{ url_for('admin.search_questions', quiz_id = quiz_id ) }}" method="GET">
+        <input class="form-control me-2" type="search" name="q" placeholder="Search Questions">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+{% endblock %}
+
+{% block content %}
+    <div class="viewquestion">
+        <h2>Search Results for Questions: "{{ query }}"</h2>
+
+        {% if question_results %}
+                {% for question in question_results %}
+                    <div class="question">
+                        <div class="list-group">
+                            <a class="list-group-item list-group-item-action disabled" aria-disabled="true">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h3 class="mb-1" style="padding: 0px !important;">Question-{{ question.id }}</h3>
+                                </div>
+                                    <p>
+                                        Question: {{ question.question_statement }}</br>
+                                        Option1: {{ question.option1 }}</br>
+                                        Option2: {{ question.option2 }}</br>
+                                        Option3: {{ question.option3 }}</br>
+                                        Option4: {{ question.option4 }}</br>
+                                        Correct Option: {{ question.correct_option }}
+                                    </p>
+                            </a>
+                        </div>
+                        <div class="edit">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editQuestion-{{ question.id }}">
+                                Edit
+                            </button>
+        
+                            <div class="modal fade" id="editQuestion-{{ question.id }}" tabindex="-1" aria-labelledby="editQuestionLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Edit Question</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="{{ url_for('admin.edit_question', question_id=question.id) }}">
+                                                {{ form.hidden_tag() }}
+                                                
+                                                <label for="question_statement" class="form-label">{{ form.question_statement.label }}</label>
+                                                {{ form.question_statement(class="form-control", value=question.question_statement) }}
+                                                
+                                                <label for="option1" class="form-label">{{ form.option1.label }}</label>
+                                                {{ form.option1(class="form-control", value=question.option1) }}
+                                                
+                                                <label for="option2" class="form-label">{{ form.option2.label }}</label>
+                                                {{ form.option2(class="form-control", value=question.option2) }}
+                                                
+                                                <label for="option3" class="form-label">{{ form.option3.label }}</label>
+                                                {{ form.option3(class="form-control", value=question.option3) }}
+                    
+                                                <label for="option4" class="form-label">{{ form.option4.label }}</label>
+                                                {{ form.option4(class="form-control", value=question.option4) }}
+                    
+                                                <label for="correct_option" class="form-label">{{ form.correct_option.label }}</label>
+                                                {{ form.correct_option(class="form-control", value=question.correct_option) }}
+                    
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    {{ form.submit(class="btn btn-primary") }}
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="delete">
+                            <button type="button" class="btn btn-danger" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deletequestion-{{ question.id }}">
+                            Delete
+                        </button>   
+                        <!-- Modal -->
+                        <div class="modal fade" id="deletequestion-{{ question.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Delete Question</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>  
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete <span id="deleteSubjectName"></span>?</p>
+                                        <p class="text-danger">This action cannot be undone and will delete all associated chapters and quizzes.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <form method="POST" action="{{ url_for('admin.delete_question', question_id=question.id) }}" class="d-inline">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        {% else %}
+            <p class="alert alert-warning">No questions found.</p>
+        {% endif %}
+    </div>
+{% endblock %}
