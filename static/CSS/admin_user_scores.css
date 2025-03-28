@@ -14,3 +14,14 @@
     padding: 10px;
     background-color: white;
 }
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#backButton{
+    padding: 0px !important;
+}

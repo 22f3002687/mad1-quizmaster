@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, SubmitField, DateTimeLocalField, TimeField, TextAreaField, IntegerField
+from wtforms import RadioField, StringField, PasswordField, DateField, SubmitField, DateTimeLocalField, TimeField, TextAreaField, IntegerField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, NumberRange
 
 class UserRegistrationForm(FlaskForm):
@@ -54,6 +54,3 @@ class QuestionForm(FlaskForm):
     correct_option = IntegerField('Correct Option (1-4)', validators=[DataRequired(), NumberRange(min=1, max=4)])
     
     submit = SubmitField('Save Question')
-
-class AttemptQuizForm(FlaskForm):
-    submit_btn = SubmitField("Submit Quiz")

@@ -16,6 +16,15 @@ Users
 {% endblock %}
 
 {% block content %}
+    <div class="styling">
+        <a class="btn btn-secondary" href="{{ url_for('admin.dashboard') }}" id="backToDashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+            </svg>
+            <p>Back To Home</p>
+        </a>
+    </div>
+
     <div class="viewuser">
         <h2>All Users</h2>
         
@@ -42,7 +51,6 @@ Users
             data-bs-target="#deleteuser-{{ user.id }}">
                     Remove User
                 </button>   
-                <!-- Modal -->
                 <div class="modal fade" id="deleteuser-{{ user.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">

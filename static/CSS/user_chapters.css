@@ -8,3 +8,14 @@
     grid-template-columns: 1fr;
     padding: 10px;
 }
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#home{
+    padding: 0px !important;
+}

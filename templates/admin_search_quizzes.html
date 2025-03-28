@@ -49,7 +49,6 @@ Quiz Search Results
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- Edit Quiz Form -->
                                         <form method="POST" action="{{ url_for('admin.edit_quiz', quiz_id=quiz.id) }}" id="editquiz-form-{{ quiz.id }}">
                                             {{ form.hidden_tag() }}
                         
@@ -85,7 +84,6 @@ Quiz Search Results
                     data-bs-target="#deletequiz-{{ quiz.id }}">
                             Delete
                         </button>   
-                        <!-- Modal -->
                         <div class="modal fade" id="deletequiz-{{ quiz.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">

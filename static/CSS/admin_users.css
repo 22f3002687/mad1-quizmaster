@@ -14,3 +14,14 @@
     padding: 10px !important;
     margin: 10px !important;
 }
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#backToDashboard{
+    padding: 0px !important;
+}

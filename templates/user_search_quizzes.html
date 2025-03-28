@@ -6,6 +6,13 @@ Quiz Search Results
 
 {% block styles %}
     <link rel="stylesheet" href="{{ url_for('static', filename='CSS/user_quizzes.css') }}"/>
+    <style>
+        {% if quiz_results|length == 0 %}
+            .viewquiz {
+                background-color: #F5F5DC  !important;
+            }
+        {% endif %}
+    </style>
 {% endblock %}
 
 {% block search %}
@@ -28,12 +35,15 @@ Quiz Search Results
                         Subject: {{ quiz.subject_name }}</br>
                         Chapter: {{ quiz.chapter_name }}</br>
                         Due Date: {{ quiz.date_of_quiz }}</br>
-                        Time Duration: {{ quiz.time_duration }} minutes</br>
+                        Time Duration: {{ quiz.time_duration }} </br>
                         Remarks: {{ quiz.remarks }}
                     </p>
                 </div>
                 <div class="attempt">
                     <a href="{{ url_for('user.attempt_quiz', chapter_id=chapter_id, quiz_id=quiz.id) }}" class="btn btn-primary">Attempt Quiz</a>
+                </div>
+                <div class="history">
+                    <a href="{{ url_for('user.quiz_history', quiz_id=quiz.id) }}" class="btn btn-info">Your Attempts</a>
                 </div>
             {% endfor %}
         {% else %}

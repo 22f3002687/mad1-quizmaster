@@ -134,8 +134,8 @@ class Quiz(db.Model):
 
     @staticmethod
     def after_insert(mapper, connection, target):
-        session = Session(connection)  # Create a session
-        chapter = session.get(Chapter, target.chapter_id)  # Fetch chapter
+        session = Session(connection) 
+        chapter = session.get(Chapter, target.chapter_id)
         subject_name = chapter.subject.name if chapter and chapter.subject else "Unknown"
         session.close()
 

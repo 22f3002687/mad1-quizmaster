@@ -1,13 +1,13 @@
 .viewquiz{
     display: grid;
-    grid-template-columns: 6fr 2fr;
+    grid-template-columns: 4fr 2fr 2fr;
     padding: 2px !important;
     margin: 10px !important;
     background-color: black;
     gap: 2px;
 }
 
-.attempt{
+.attempt, .history{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,4 +17,15 @@
 .quiz{
     background-color: #F5F5DC  !important;
     padding: 10px; 
+}
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#home{
+    padding: 0px !important;
 }

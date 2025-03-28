@@ -8,3 +8,14 @@
     border: 2px solid #000;
     padding: 10px;
 }
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+#backButton{
+    padding: 0px !important;
+}

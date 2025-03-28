@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Quiz History
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/quiz_history.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    {% if attempts|length == 0 %}
+        <h2 style="margin: 10px;">No Quiz Results Found</h2>
+    {% else %}
+        {% if quiz_id == 0 %}
+            <h2 style="margin: 10px;">All Quiz Results</h2>
+            <div class="details">
+                <p><strong>No Of Attempts {{ no_of_attempts }} </strong></p>
+                <p><strong>Average Score {{ avg_sore }} </strong></p>
+            </div>
+            <div class="viewquiz">
+                {% for attempt in attempts %}
+                    <div class="quiz">
+                        <h3>Quiz-{{ attempt.quiz.id }}</h3>
+                        <p>Chapter: {{ attempt.quiz.chapter.name }}</p>
+                        <p>Subject: {{ attempt.quiz.chapter.subject.name }}</p>
+                        <p>Due Date: {{ attempt.quiz.date_of_quiz.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <p>Time Duration: {{ attempt.quiz.time_duration.strftime('%H:%M') }}</p>
+                        <p>Remarks: {{ attempt.quiz.remarks }}</p>
+                        <p>Score: {{ attempt.total_scored }}</p>
+                        <p>Attempted On: {{ attempt.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+        {% else %}
+            <h2 style="margin: 10px;">Quiz Results Of Quiz-{{ quiz_id }}</h2>
+            <div class="details">
+                <h3>Quiz-{{ quiz_id }}</h3>
+                <p>Chapter: {{ quiz.chapter.name }}</p>
+                <p>Subject: {{ quiz.chapter.subject.name }}</p>
+                <p>Due Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d %H:%M') }}</p>
+                <p>Time Duration: {{ quiz.time_duration.strftime('%H:%M') }}</p>
+                <p>Remarks: {{ quiz.remarks }}</p>
+                <p><strong>No Of Attempts {{ no_of_attempts }} </strong></p>
+                <p><strong>Average Score {{ avg_sore }} </strong></p>
+            </div>
+            <div class="viewquiz">
+                {% for attempt in attempts %}
+                    <div class="quiz">
+                        <p>Score: {{ attempt.total_scored }}</p>
+                        <p>Attempted On: {{ attempt.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
+       
+{% endblock %}

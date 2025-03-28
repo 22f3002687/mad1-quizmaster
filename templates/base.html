@@ -44,10 +44,10 @@
                                 <a class="nav-link" href="{{ url_for('user.quizzes', chapter_id=0) }}">Quizzes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Performance</a>
+                                <a class="nav-link" href="{{ url_for('user.quiz_history', quiz_id = 0)}}">Performance</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Profile</a>
+                                <a class="nav-link" href="{{ url_for( 'user.profile' )}}">Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ url_for('auth.logout')}}">Logout</a>

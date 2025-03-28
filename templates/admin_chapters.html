@@ -9,12 +9,21 @@ Chapters
 {% endblock %}
 
 {% block content %}
-<!-- Button to trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" id="addChapter">
-    Create new chapter
-</button>
+<div class="styling">
+    
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter" id="addChapter">
+        Create new chapter
+    </button>
 
-<!-- Modal -->
+    <a href="{{ url_for('admin.subjects') }}" class="btn btn-secondary" id="backButton">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+        </svg>
+        <p>Back To Subjects</p>
+    </a>
+
+</div>
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -23,9 +32,8 @@ Chapters
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Ensure form has method POST and action -->
                 <form method="POST" action="{{ url_for('admin.chapters', subject_id=subject.id) }}">
-                    {{ form.hidden_tag() }}  <!-- CSRF Token -->
+                    {{ form.hidden_tag() }} 
 
                     <div class="mb-3">
                         <label for="name" class="form-label">{{ form.name.label }}</label>
@@ -68,7 +76,6 @@ Chapters
                     Edit
                 </button>
 
-                <!-- Modal -->
                 <div class="modal fade" id="editchapter-{{ chapter.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -77,9 +84,8 @@ Chapters
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!-- Ensure form has method POST and action -->
                                 <form method="POST" action="{{ url_for('admin.edit_chapter', chapter_id=chapter.id) }}">
-                                    {{ form.hidden_tag() }}  <!-- CSRF Token -->
+                                    {{ form.hidden_tag() }}  
 
                                     <div class="mb-3">
                                         <label for="name" class="form-label">{{ form.name.label }}</label>
@@ -107,7 +113,6 @@ Chapters
             data-bs-target="#deletechapter-{{ chapter.id }}">
                     Delete
                 </button>   
-                <!-- Modal -->
                 <div class="modal fade" id="deletechapter-{{ chapter.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">

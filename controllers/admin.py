@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from flask_login import login_required, current_user
+from flask_login import current_user
 from models import *
 from functools import wraps
 from .forms import SubjectForm, ChapterForm, QuizForm, QuestionForm
@@ -164,7 +164,7 @@ def delete_quiz(quiz_id):
 @admin_required
 def scores(quiz_id):
     quiz = Quiz.query.get_or_404(quiz_id)
-    scores = Score.query.filter_by(quiz_id=quiz_id).all()
+    scores = Score.query.filter_by(quiz_id=quiz_id).order_by(Score.timestamp.desc()).all()
 
     return render_template('admin_scores.html', quiz=quiz, scores=scores, is_admin=True)
 
@@ -228,7 +228,7 @@ def users():
 @admin_required
 def user_scores(user_id):
     user = User.query.get_or_404(user_id)
-    scores = Score.query.filter_by(user_id=user_id).all()
+    scores = Score.query.filter_by(user_id=user_id).order_by(Score.timestamp.desc()).all()
     return render_template('admin_user_scores.html', user=user, scores=scores, is_admin=True)
 
 @admin_bp.route('/delete_user/<int:user_id>', methods=['POST'])
@@ -243,7 +243,6 @@ def delete_user(user_id):
     return redirect(url_for('admin.users'))
 
 def escape_fts_query(query):
-    """Escape special characters for FTS5 search"""
     return re.sub(r'[\W]+', ' ', query) 
 
 

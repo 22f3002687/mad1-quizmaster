@@ -38,7 +38,6 @@ Subject Search Results
                             Edit
                         </button>
         
-                        <!-- Modal -->
                         <div class="modal fade" id="editsubject-{{ subject.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
@@ -47,9 +46,8 @@ Subject Search Results
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- Ensure form has method POST and action -->
                                         <form method="POST" action="{{ url_for('admin.edit_subject', subject_id=subject.id) }}">
-                                            {{ form.hidden_tag() }}  <!-- CSRF Token -->
+                                            {{ form.hidden_tag() }}  
         
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">{{ form.name.label }}</label>
@@ -77,7 +75,6 @@ Subject Search Results
                     data-bs-target="#deletesubject-{{ subject.id }}">
                             Delete
                         </button>   
-                        <!-- Modal -->
                         <div class="modal fade" id="deletesubject-{{ subject.id }}" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">

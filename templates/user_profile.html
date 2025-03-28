@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ user.username }}
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_profile.css') }}">
+{% endblock %}
+
+
+{% block content %}
+    <h1 style="margin: 10px;">UserName: {{ user.username }}</h1>
+    <div class="grid-container">
+        <div class="details">
+               <h2> <strong> Name: {{ user.full_name }} </strong> </h2>
+                <h3>Email: {{ user.email }} </h3>
+                <h3>Date Of Birth: {{ user.dob }} </h3>
+                <h3>Qualification: {{ user.qualification }}</h3>
+        </div>    
+        <div class="quiz-performance">
+            <h2>{{ no_of_attempts }} no of quiz attempts</h2>
+            <br><br>
+            <h2>{{ avg_score }} average Score</h2>
+        </div>
+        <div class="quiz-history">
+            <h2>
+                <a href="{{ url_for('user.quiz_history', quiz_id=0 ) }}" class="btn btn-primary">All Quiz Results</a>
+            </h2>
+        </div>
+    </div>
+
+{% endblock %}

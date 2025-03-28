@@ -16,6 +16,27 @@ User Quizzes
 {% endblock %}
 
 {% block content %}
+
+    {% if chapter_id == 0%}
+        <div class="styling">
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-secondary" id="home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+                </svg>
+                <p>Home</p>
+            </a>
+        </div>
+    {% else %}
+        <div class="styling">
+            <a href="{{ url_for('user.chapters', subject_id = chapter.subject.id )}}" class="btn btn-secondary" id="home">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                </svg>
+                <p>Chapters</p>
+            </a>
+        </div>
+    {% endif %}
+
     {% if quizzes|length == 0 %}
         <h2 style="margin: 10px;">No Quizzes Found</h2>
     {% else %}
@@ -27,12 +48,16 @@ User Quizzes
                     <h3>Quiz-{{ quiz.id }}</h3>
                     <p>Chapter: {{ quiz.chapter.name }}</p>
                     <p>Subject: {{ quiz.chapter.subject.name }}</p>
-                    <p>Due Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d') }}</p>
-                    <p>Time Duration: {{ quiz.time_duration }} minutes</p>
+                    <p>Due Date: {{ quiz.date_of_quiz.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <p>Time Duration: {{ quiz.time_duration }}</p>
                     <p>Remarks: {{ quiz.remarks }}</p>
                 </div>
                 <div class="attempt">
                     <a href="{{ url_for('user.attempt_quiz', chapter_id=chapter_id, quiz_id=quiz.id) }}" class="btn btn-primary">Attempt Quiz</a>
+                </div>
+
+                <div class="history">
+                    <a href="{{ url_for('user.quiz_history', quiz_id = quiz.id) }}" class="btn btn-info">Your Attempts</a>
                 </div>
             {% endfor %}
         </div>

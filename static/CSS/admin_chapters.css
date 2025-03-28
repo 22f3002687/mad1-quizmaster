@@ -19,3 +19,14 @@
     align-items: center;
     justify-content: center;
 }
+
+.styling{
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+#backButton{
+    padding: 0px !important;
+}
